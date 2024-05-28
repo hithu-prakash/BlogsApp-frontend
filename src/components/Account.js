@@ -1,92 +1,49 @@
+import { useState } from "react";
+ 
 import { useAuth } from "../context/useAuth";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import axios from "../config/axios"
+//import EditUser from "./EditUser";
+//import Mypost from "./Mypost";
 
 export default function Account() {
-    const {user,dispatch} = useAuth()
-    const navigate = useNavigate()
-
-    const[form,setForm]=useState({
-        username : user.profile ? user.profile.username:"",
-        email : user.profile ? user.profile.email:"",
-        bio: user.profile ? user.profile.bio:"",
-    })
-
-    const handleChange=(e)=>{
-        const { value, name } = e.target 
-        setForm({...form, [name]: value })
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const [isEdit,setIsEdit]=useState(false)
+    const handlePost=()=>{
+        navigate("/myposts")
     }
 
-    const handleSubmit=async(e)=>{
-        e.preventDefault()
-        console.log(user.profile)
-        if(user.profile) {
-            // api to update
-            const response = await axios.put('/user/update', form, {
-                headers: {
-                    Authorization: localStorage.getItem('token')
-                }
-            })
-            alert('profile update')
-            dispatch({ type: 'SET_PROFILE', payload: response.data})
-        } else {
-            const response = await axios.post('/user/register', form, {
-            headers: {
-                Authorization: localStorage.getItem('token')
-            }
-        })
-        alert('profile created')
-        dispatch({ type: 'SET_PROFILE', payload: response.data})
-        }
+    const handleEdit=()=>{
+       // setIsEdit(true); 
+        navigate("/editUser")
     }
 
-    const handleToggle = () => {
-        setForm({...form, isEdit: !form.isEdit })
+    const handleClick = () => {
+        navigate("/AddBlogs");
     }
-    return(
+    // const handleToggle = () => {
+    //     setIsEdit(!isEdit)
+    // }
+    
+
+    if (!user || !user.account) {
+        return <p>Loading user data...</p>;
+    }
+
+    return (
         <div>
-            <h1>Account</h1>
-
+            <h1>My Account</h1>
+            {/* {user.account.profilePic && (
+                <img src={`http://localhost:4444/backend/images/${user.account.profilePic}`} alt="Profile" width="200" height="200" />
+            )} */}
+            <p>Username - {user.account.username}</p>
+            <p>Email - {user.account.email}</p>
+            <p>Bio - {user.account.bio}</p>
+            {/* <h3>For create my post Area</h3> */}
+            <button onClick={handleClick}>Create Blog</button>
+            <button onClick={handleEdit}>Edit</button>
+            {/* <button onClick={handlePost}>Myposts</button> */}
             
-
-            <p>Username:{user.account.username}</p>
-            <p>Email:{user.account.email}</p>
-            <p>Bio:{user.account.bio}</p>
-            
-            <button onClick={handleToggle}> { form.isEdit ? 'Cancel' : 'Edit' }</button>
-            <form onSubmit={handleSubmit}></form>
-
-            <form>
-            <label htmlFor="username">Username :</label>
-            <input 
-                    type="text" 
-                    value={form.username} 
-                    onChange={handleChange}
-                    name="username" 
-                    id="username"
-            />
-            <br />
-            <label htmlFor="email">email :</label>
-            <input 
-                    type="text" 
-                    value={form.email} 
-                    onChange={handleChange}
-                    name="email" 
-                    id="email"
-            />
-            <br />
-            <label htmlFor="bio">Bio :</label>
-            <input 
-                    type="text" 
-                    value={form.bio} 
-                    onChange={handleChange}
-                    name="bio" 
-                    id="bio"
-            />
-            <br/>
-            { form.isEdit && <input type="submit" />  }
-            </form>
         </div>
-    )
+    );
 }

@@ -14,6 +14,8 @@ import AddBlogs from './components/AddBlogs';
 import AllBlogs from './components/AllBlogs';
 import MyBlogs from './components/MyBlogs';
 import SinglePost from './components/SingleBlogs';
+import EditUser from './components/EditUser';
+import Comment from './components/Comment';
 
 
 function App() {
@@ -25,6 +27,9 @@ function App() {
    const loggedIn=()=>{
       toast("successfully logged !!")
        }
+       const postIn=()=>{
+        toast("successfully posted !!")
+         }
 
        useEffect(()=>{
         if(localStorage.getItem("token")){
@@ -53,7 +58,7 @@ function App() {
         
         {!user.isLoggedIn ? (
           <>
-          <Link to='/addblogs'>AddBlogs</Link> | 
+          <Link to='/addblogs'>Create Blogs</Link> | 
           
           <Link to="/register">Register</Link> |
           <Link to="/login">Login</Link> |
@@ -62,6 +67,7 @@ function App() {
         ) : (
           <>
           <Link to="/account">Account</Link> |
+          <Link to='/addblogs'>Create Blogs</Link> | 
           <Link to='/allblogs'>AllBlogs</Link>|
           <Link to='/myblogs'>MyBlogs</Link> |
           <Link to="/" onClick={()=>{
@@ -82,11 +88,13 @@ function App() {
                 <Account />
               </PrivateRouter>
             } />
+             <Route path="/editUser" element={<EditUser/>}  />
             <Route path='/addblogs' element={
               <PrivateRouter>
                 <AddBlogs/>
               </PrivateRouter>} />
               <Route path='/allblogs' element={ <AllBlogs/>}/>
+              <Route path="/comment" element={<Comment/>}  />
               <Route path='/myblogs' element={
             <PrivateRouter>
               <MyBlogs/>
@@ -99,7 +107,7 @@ function App() {
           </Routes>
           
           </center>
-          <ToastContainer/>
+         <ToastContainer position='top-center' autoClose={5000}/>
       </div>
     
   );

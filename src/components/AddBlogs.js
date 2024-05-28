@@ -60,7 +60,7 @@ export default function AddBlogs(){
 
     return(
         <div>
-            <h1>Add Your Blogs</h1>
+            <h1>Create Your Blogs</h1>
             <form onSubmit={handleSubmit}>
             <label htmlFor="title">Enter Title</label><br/>
             <input type="text"
@@ -69,6 +69,7 @@ export default function AddBlogs(){
             onChange={e=>{setTitle(e.target.value)}}
             />
             <br/>
+            <br />
             <label htmlFor="content">Enter Content</label><br/>
             <ReactQuill 
             type='text'
@@ -77,6 +78,7 @@ export default function AddBlogs(){
              value={content} 
              onChange={setContent} />
              <br/>
+             <br />
              <label htmlFor="img">Add images</label><br/>
             <input type="text"
             value={img}
@@ -84,6 +86,7 @@ export default function AddBlogs(){
             onChange={e=>{setImg(e.target.value)}}
             />
              <br/>
+             <br />
              <input type="submit"/>
 
             </form>
