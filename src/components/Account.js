@@ -1,5 +1,5 @@
 import { useState } from "react";
- 
+import axios from "../config/axios"
 import { useAuth } from "../context/useAuth";
 import { useNavigate } from "react-router-dom";
 //import EditUser from "./EditUser";
@@ -9,6 +9,9 @@ export default function Account() {
     const { user } = useAuth();
     const navigate = useNavigate();
     const [isEdit,setIsEdit]=useState(false)
+    const [profilePic, setProfilePic] = useState(null);
+
+    
     const handlePost=()=>{
         navigate("/myposts")
     }
@@ -33,9 +36,12 @@ export default function Account() {
     return (
         <div>
             <h1>My Account</h1>
-            {/* {user.account.profilePic && (
-                <img src={`http://localhost:4444/backend/images/${user.account.profilePic}`} alt="Profile" width="200" height="200" />
-            )} */}
+            {user.account.profilePic && (
+                 <img src={`/images ${user.account.profilePic}`} alt="Profile" width="200" height="200" />
+                //<img src={require(`.../images/${data.image}`)} />
+            )}
+
+            
             <p>Username - {user.account.username}</p>
             <p>Email - {user.account.email}</p>
             <p>Bio - {user.account.bio}</p>

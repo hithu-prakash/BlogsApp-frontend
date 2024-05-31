@@ -75,7 +75,11 @@ export default function Register({ registerIn }) {
         
 
             try {
-                const response = await axios.post("/user/register", formData);
+                const response = await axios.post("/user/register", formData ,{
+                    headers:{
+                        'Content-Type': 'multipart/form-data',
+                    }
+                });
                 console.log(response.data);
 
                 
