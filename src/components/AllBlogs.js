@@ -22,32 +22,27 @@ export default function AllBlogs() {
         fetchBlogs();
     }, []);
 
-    const handleToggle = (id) => {
-        setCommentId(commentId === id ? "" : id);
-    };
-
-    const handleSubmit=async(e)=>{
-        e.preventDefault()
-        try{
-            const response = await axios.put(`/api/posts/${postId}/comments/${commentId}`)
-            console.log(response.data)
-            setComment(response.data)
-        } catch(err){
-            console.log(err.message)
-        }
-    }
-    
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         const response= await axios.post(`/api/posts/${id}/comments/${id}`)
-    //         console.log(response.data)
-    //     }
-    //     catch(err){
-    //         console.log(err)
-    //     }
-       
+    // const handleToggle = (id) => {
+    //     setCommentId(commentId === id ? "" : id);
     // };
+
+    // const handleSubmit=async(e)=>{
+    //      e.preventDefault()
+    //      try{
+    //       const response = await axios.put(`/api/posts/${postId}/comments/${commentId}`,{
+    //     headers:{
+    //         Authorization:localStorage.getItem('token')
+    //     }
+    // })
+    //         console.log(response.data)
+    //         setComment(response.data)
+    //     } catch(err){
+    //          console.log(err.message)
+    //      }
+    // }
+    
+    
+
 
     return (
         <div>
@@ -55,22 +50,26 @@ export default function AllBlogs() {
 
             {blogs && blogs.map((blog) => (
                 <div key={blog._id}>
+                    {/* <img src={URL.createObjectURL(blog.photoData)} alt={blog.title} /> */}
 
                     <h4>{blog.title}</h4>
+                    <img src={blog.images} alt={blog.title} />
                     
                     <div dangerouslySetInnerHTML={{ __html: blog.content }}></div>
                     <button onClick={() => navigate(`/singlepost/${blog._id}`)}>View</button>
 
-                    <button onClick={() => handleToggle(blog._id)}>{commentId === blog._id ? 'Cancel' : 'Comment'}</button>
-                    
+                    {/* <button onClick={() => handleToggle(blog._id)}>{commentId === blog._id ? 'Cancel' : 'Comment'}</button>
+                     */}
                     {commentId === blog._id && (
-                        <form onSubmit={handleSubmit}>
+                        <form>
                             <textarea value={comment}  onChange={(e) => setComment(e.target.value)} /><br/>
                             <input type="submit"/>
+
+                            
                         </form>
                     )}
                 </div>
             ))}
         </div>
     );
-}
+    }

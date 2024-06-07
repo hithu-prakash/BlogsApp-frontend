@@ -3,6 +3,7 @@ import { useAuth } from "../context/useAuth"
 import axios from "../config/axios"
 import { useNavigate } from "react-router-dom"
 import AllBlogs from "./AllBlogs"
+
 export default function EditUser(){
     const navigate=useNavigate()
     const {user}=useAuth()
@@ -49,16 +50,23 @@ export default function EditUser(){
 //   reader.readAsDataURL(file);
 //       };
 
-      const handleSubmit=async(e)=>{
-        e.preventDefault()
-        const response=await axios.put("/user/update",form,{
-            headers:{
-                Authorization:localStorage.getItem("token")
-            }
-        })
-       console.log("edit data",response.data)
-       navigate("/AllBlogs")
-      }
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put("/user/update", form, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
+      console.log("edit data", response.data);
+      setForm(response.data);
+      navigate("/AllBlogs");
+    } catch (error) {
+      console.log(error.response.data);
+      setForm({ ...form, serverErrors: error.response.data });
+    }
+  };
+  
     return (
         <div>
         { form.serverErrors && displayErrors() } 
